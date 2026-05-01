@@ -1,0 +1,19 @@
+name: Deploy
+on:
+  release:
+    types: [published]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via script
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: course.prafdin.ru
+          username: user
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 3119
+          script: bash ~/catty-reminders-app/run_app.sh ${{ github.sha }}
+          debug: true
+

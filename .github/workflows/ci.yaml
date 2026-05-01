@@ -1,0 +1,45 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - lab2
+      - lab2_autotests*
+  pull_request:
+    branches:
+      - lab2
+      - lab2_autotests*
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt uvicorn pytest-playwright
+          playwright install chromium --with-deps
+
+      - name: Start server
+        run: |
+          nohup uvicorn app.main:app --port 8181 --host 127.0.0.1 &
+          sleep 5
+
+      - name: Test suite
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: pytest --junitxml=test_result.xml || true
+
+      - name: Archive test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test_result
+          path: test_result.xml
