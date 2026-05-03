@@ -42,7 +42,7 @@ jobs:
           name: test_result
           path: test_result.xml
   build-and-push:
-    needs: tests
+    needs: test
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
     permissions:
