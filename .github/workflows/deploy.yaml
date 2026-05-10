@@ -22,7 +22,7 @@ jobs:
           script: |
               bash ~/catty-reminders-app/run_app.sh \
               ${{ github.sha }} \
-              "ghcr.io/${{steps.prep.outouts.repo_lower}}:latest" \
+              "ghcr.io/${{steps.prep.outputs.repo_lower}}:latest" \
               "${{secrets.GH_PAT}}" \
               "${{github.actor}}"
           debug: true
