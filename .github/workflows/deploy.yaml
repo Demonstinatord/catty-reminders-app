@@ -20,10 +20,10 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 3119
           script: |
-              bash ~/catty-reminders-app/run_app.sh\
-              ${{ github.sha }}\
-              "ghcr.io/${{steps.prep.outouts.repo_lower}}:latest"\
-              "${{secrets.GH_PAT}}"\
+              bash ~/catty-reminders-app/run_app.sh \
+              ${{ github.sha }} \
+              "ghcr.io/${{steps.prep.outouts.repo_lower}}:latest" \
+              "${{secrets.GH_PAT}}" \
               "${{github.actor}}"
           debug: true
 
