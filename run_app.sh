@@ -17,3 +17,4 @@ docker run -d --name $CONTAINER_NAME -p 8181:8181 -e DEPLOY_REF=$SHA --restart u
 docker image prune -f
 
 
+
