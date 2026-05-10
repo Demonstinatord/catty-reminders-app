@@ -19,8 +19,7 @@ jobs:
           username: user
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 3119
-          script: 
-            - >
+          script: >
               bash ~/catty-reminders-app/run_app.sh 
               ${{ github.sha }} 
               "ghcr.io/${{steps.prep.outouts.repo_lower}}:latest"
