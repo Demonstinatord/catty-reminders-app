@@ -7,6 +7,11 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Prepare Image Name
+        id: prep
+        run: |
+          REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          echo "repo_lower=${REPO_LOWER}" >> $GITHUB_OUTPUT
       - name: Deploy via script
         uses: appleboy/ssh-action@v1.0.3
         with:

@@ -1,16 +1,10 @@
 #!/bin/bash
-cd /home/user/catty-reminders-app || exit 1
-SHA=$1
-echo "Deploying SHA: $SHA"
-git fetch --all
-git reset --hard "$SHA"
-/home/user/catty-reminders-app/venv/bin/python -m pip install -r requirements.txt
-echo "DEPLOY_REF=$SHA" | sudo tee /etc/catty-app-env
-sudo systemctl restart catty
-sleep 3
-if systemctl is-active --quiet catty; then
-    echo "SUCCESS: SHA: $SHA"
-else
-    echo "ERROR"
-    exit 1
-fi
+IMAGE="ghcr.io/${{ steps.prep.outputs.repo_lower }}:latest"
+CONTAINER_NAME="catty-container"
+echo "Pulling image: $IMAGE"
+docker pull $IMAGE
+docker stop $CONTAINER_NAME || true
+docker rm $CONTAINER_NAME || true
+
+docker run -d --name $CONTAINER_NAME -p 8181:8181 --restart unless-stopped -e DEPLOY_REF=${{ github.sha }} $IMAGE
+docker image prune -f
