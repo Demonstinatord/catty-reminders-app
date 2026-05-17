@@ -44,7 +44,7 @@ jobs:
 
       - name: Run tests
         env:
-          PYTHONPATH: ${{ github.workspace }}:${{ github.workspace }}/app
+          PYTHONPATH: ${{ github.workspace }}
         run: pytest --junitxml=test_result.xml
 
   build-and-push:
