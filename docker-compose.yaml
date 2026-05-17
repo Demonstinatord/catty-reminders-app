@@ -1,7 +1,7 @@
 name: catty
 services:
   app:
-    image: ${APP_IMAGE:-ghcr.io/your-github-username/catty-reminders-app-app:latest}
+    image: ${APP_IMAGE:-ghcr.io/demonstinatord/catty-reminders-app-app:latest}
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -22,7 +22,7 @@ services:
       - catty-network
 
   db-service:
-    image: ${DB_IMAGE:-ghcr.io/your-github-username/catty-reminders-app-db:latest}
+    image: ${DB_IMAGE:-ghcr.io/demonstinatord/catty-reminders-app-db:latest}
     build: 
       context: ./db_service
       dockerfile: ./Dockerfile
