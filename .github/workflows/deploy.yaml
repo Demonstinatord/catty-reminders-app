@@ -3,7 +3,7 @@ on:
   release:
     types: [published]
   push:
-    branches: [ lab4* ]
+    branches: ['lab4*']
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -19,10 +19,10 @@ jobs:
             cd /home/user/catty-reminders-app
             git fetch origin
             git reset --hard origin/lab4
-
             export APP_IMAGE=ghcr.io/demonstinatord/catty-reminders-app-app:${{ github.sha }}
             export DB_IMAGE=ghcr.io/demonstinatord/catty-reminders-app-db:${{ github.sha }}
 	    export DEPLOY_REF=${{ github.sha }}
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             docker compose up -d --pull always --remove-orphans --force-recreate
             docker image prune -f
+
