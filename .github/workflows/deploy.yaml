@@ -21,7 +21,7 @@ jobs:
             export APP_IMAGE=ghcr.io/demonstinatord/catty-reminders-app-app:${{ github.sha }}
             export DB_IMAGE=ghcr.io/demonstinatord/catty-reminders-app-db:${{ github.sha }}
 	    export DEPLOY_REF=${{ github.sha }}
-            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            echo "${{ secrets.GH_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             docker compose up -d --pull always --remove-orphans --force-recreate
             docker image prune -f
 
