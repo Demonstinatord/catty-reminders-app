@@ -1,10 +1,14 @@
+import os
 from fastapi import FastAPI, HTTPException
 from tinydb import TinyDB, Query
 from pydantic import BaseModel
 from typing import List, Optional
 
 app = FastAPI(title="TinyDB Network Service")
-db = TinyDB('/data/reminder_db.json')
+if os.path.exists('/data'):
+    db = TinyDB('/data/reminder_db.json')
+else:
+    db = TinyDB('reminder_db.json')
 
 _lists = db.table('reminder_lists')
 _items = db.table('reminder_items')
