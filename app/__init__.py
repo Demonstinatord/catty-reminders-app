@@ -22,7 +22,7 @@ with open(config_path) as config_json:
     users = config['users']
     db_path = config['db_path']
 
-DEPLOY_REF = os.getenv("DEPLOY_REF", "NA")
+
 
 # --------------------------------------------------------------------------------
 # Establish the Secret Key
@@ -35,3 +35,4 @@ secret_key = config['secret_key']
 # --------------------------------------------------------------------------------
 
 templates = Jinja2Templates(directory="templates")
+DEPLOY_REF = os.getenv("DEPLOY_REF", "NA")
