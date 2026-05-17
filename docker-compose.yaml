@@ -13,6 +13,7 @@ services:
       - DB_URL=http://db-service:8181
       - PYHTONDONTWRITEBYTECODE=1
       - SECRET-KEY=Cats are awesome!
+      - DEPLOY_REF=${DEPLOY_REF}
     volumes:
       - ./config.json:/app/config.json:ro
     depends_on:
