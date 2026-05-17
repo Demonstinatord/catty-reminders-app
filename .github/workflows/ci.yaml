@@ -43,6 +43,8 @@ jobs:
           sleep 5
 
       - name: Run tests
+        env:
+          PYTHONPATH: ${{ github.workspace }}:${{ github.workspace }}/app
         run: pytest --junitxml=test_result.xml
 
   build-and-push:
