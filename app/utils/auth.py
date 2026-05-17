@@ -8,12 +8,12 @@ This module provides security and authentication.
 
 import jwt
 import secrets
-
+import os
 from app import db_path, users, secret_key
 from app.utils.exceptions import UnauthorizedException, UnauthorizedPageException
 from app.utils.storage import ReminderStorage
 
-from fastapi import Cookie, Depends, Form
+from fastapi import Cookie, Depends, Form, Request
 from fastapi.security import HTTPBasic
 from pydantic import BaseModel
 from typing import Optional
@@ -100,8 +100,11 @@ def get_username_for_page(cookie: Optional[AuthCookie] = Depends(get_auth_cookie
 
 
 def get_storage_for_api(username: str = Depends(get_username_for_api)) -> ReminderStorage:
-  return ReminderStorage(owner=username, db_path=db_path)
+  db_url = os.getenv("DB_URL", "http://db-service:8181")
+  return ReminderStorage(owner=username, db_url=db_url)
 
 
 def get_storage_for_page(username: str = Depends(get_username_for_page)) -> ReminderStorage:
-  return ReminderStorage(owner=username, db_path=db_path)
+  
+  db_url = os.getenv("DB_URL", "http://db-service:8181")
+  return ReminderStorage(owner=username, db_url=db_url)

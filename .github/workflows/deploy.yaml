@@ -1,4 +1,4 @@
-name: Deploy
+name: CD
 on:
   release:
     types: [published]
@@ -7,22 +7,21 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Prepare Image Name
-        id: prep
-        run: |
-          REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
-          echo "repo_lower=${REPO_LOWER}" >> $GITHUB_OUTPUT
-      - name: Deploy via script
-        uses: appleboy/ssh-action@v1.0.3
+      - name: Deploy via Docker Compose
+        uses: appleboy/ssh-action@v1
         with:
           host: course.prafdin.ru
           username: user
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 3119
           script: |
-              bash ~/catty-reminders-app/run_app.sh \
-              ${{ github.sha }} \
-              "ghcr.io/${{steps.prep.outputs.repo_lower}}:latest" \
-              "${{secrets.GH_PAT}}" \
-              "${{github.actor}}"
-          debug: true
+            cd /home/user/catty-reminders-app
+            git fetch origin
+            git reset --hard origin/lab4
+
+            export APP_IMAGE=ghcr.io/your-github-username/catty-reminders-app-app:${{ github.sha }}
+            export DB_IMAGE=ghcr.io/your-github-username/catty-reminders-app-db:${{ github.sha }}
+
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            docker compose up -d --pull always --remove-orphans --force-recreate
+            docker image prune -f

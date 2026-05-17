@@ -2,24 +2,25 @@
 This module builds shared parts for other modules.
 """
 
-# --------------------------------------------------------------------------------
-# Imports
-# --------------------------------------------------------------------------------
-
 import json
 import os
-
 from fastapi.templating import Jinja2Templates
 
-
 # --------------------------------------------------------------------------------
-# Read Configuration
+# Read Configuration 
 # --------------------------------------------------------------------------------
 
-with open('config.json') as config_json:
-  config = json.load(config_json)
-  users = config['users']
-  db_path = config['db_path']
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+config_path = os.path.join(BASE_DIR, 'config.json')
+
+
+if not os.path.exists(config_path):
+    config_path = 'config.json'
+
+with open(config_path) as config_json:
+    config = json.load(config_json)
+    users = config['users']
+    db_path = config['db_path']
 
 DEPLOY_REF = os.getenv("DEPLOY_REF", "NA")
 
@@ -28,7 +29,6 @@ DEPLOY_REF = os.getenv("DEPLOY_REF", "NA")
 # --------------------------------------------------------------------------------
 
 secret_key = config['secret_key']
-
 
 # --------------------------------------------------------------------------------
 # Templates

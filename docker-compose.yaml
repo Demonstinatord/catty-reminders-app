@@ -1,0 +1,45 @@
+name: catty
+services:
+  app:
+    image: ${APP_IMAGE:-ghcr.io/your-github-username/catty-reminders-app-app:latest}
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: catty-app
+    restart: unless-stopped
+    ports:
+      - "8181:8181"
+    environment:
+      - DB_URL=http://db-service:8181
+      - PYHTONDONTWRITEBYTECODE=1
+      - SECRET-KEY=Cats are awesome!
+    volumes:
+      - ./config.json:/app/config.json:ro
+    depends_on:
+      db-service:
+        condition: service_healthy
+    networks:
+      - catty-network
+
+  db-service:
+    image: ${DB_IMAGE:-ghcr.io/your-github-username/catty-reminders-app-db:latest}
+    build: 
+      context: ./db_service
+      dockerfile: ./Dockerfile
+    container_name: catty-tinydb
+    restart: unless-stopped
+    volumes:
+      - tinydb_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8181/docs"]
+      timeout: 5s
+      retries: 3
+    networks:
+      - catty-network
+
+networks:
+  catty-network:
+    driver: bridge
+
+volumes:
+  tinydb_data:
