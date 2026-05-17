@@ -93,6 +93,9 @@ jobs:
           context: ./db_service
           file: ./db_service/Dockerfile
           push: true
+          build-args: |
+            DEPLOY_REF=${{ github.sha }}
           tags: |
             ghcr.io/${{ steps.prep.outputs.repo_lower }}-db:latest
             ghcr.io/${{ steps.prep.outputs.repo_lower }}-db:${{ github.sha }}
+            
