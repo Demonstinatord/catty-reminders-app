@@ -45,6 +45,13 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}:${{ github.workspace }}/app
         run: pytest --junitxml=test_result.xml
+        
+      - name: Upload test results
+        if: always() 
+        uses: actions/upload-artifact@v4
+        with:
+          name: test_result
+          path: test_result.xml
 
   build-and-push:
     needs: tests
@@ -77,8 +84,8 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ steps.prep.outputs.repo_lower }}-app:latest
-            ghcr.io/${{ steps.prep.outputs.repo_lower }}-app:${{ github.sha }}
+            ghcr.io/${{ steps.prep.outputs.repo_lower }}:latest
+            ghcr.io/${{ steps.prep.outputs.repo_lower }}:${{ github.sha }}
 
       - name: Build TinyDB Service Image
         uses: docker/build-push-action@v5
