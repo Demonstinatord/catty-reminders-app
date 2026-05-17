@@ -2,7 +2,8 @@ name: CD
 on:
   release:
     types: [published]
-
+  push:
+    branches: [ lab4* ]
 jobs:
   deploy:
     runs-on: ubuntu-latest
