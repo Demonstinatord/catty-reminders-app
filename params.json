@@ -216,11 +216,11 @@
       "app": "catty-reminders-app"
     },
     {
-<<<<<<< HEAD
       "login": "Demonstinatord",
       "id": "sergienko",
       "app": "catty-reminders-app"
-=======
+    },
+    {
       "login": "RenTogan",
       "id": "mansurov",
       "app": "catty-reminders-app"
